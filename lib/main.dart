@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:lets_connect/pages/job_search.dart';
 import 'pages/login_page.dart';
 import 'pages/top_bar.dart';
-import 'pages/inbox_chat.dart'; // Import FullChatPage
+import 'pages/inbox_chat.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // ✅ Initialize Firebase here
   runApp(const MyApp());
 }
 
@@ -24,7 +27,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  // Optional: Global navigator key if needed
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
@@ -58,8 +60,7 @@ class _MyAppState extends State<MyApp> {
               isDarkMode: _isDarkMode,
             ),
         '/job_search': (context) => const JobSearch(),
-        '/chat': (context) => const InboxPage(), // <-- Route to full chat page
-        
+        '/chat': (context) => const InboxPage(),
       },
     );
   }

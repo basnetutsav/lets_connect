@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-// Main JobSearch widget with tabs
 class JobSearch extends StatefulWidget {
   const JobSearch({super.key});
 
@@ -14,10 +13,10 @@ class _JobSearchState extends State<JobSearch> with SingleTickerProviderStateMix
   late TabController _tabController;
 
   final List<TabPage> pages = const [
-    TabPage(tabTitle: '🏠 Generl Chat Page'),
-    TabPage(tabTitle: '🛍️ Marketplace Page'),
-    TabPage(tabTitle: '💼 Job Search Page'),
-    TabPage(tabTitle: '📢 Announcements Page'),
+    TabPage(tabTitle: '🏠 General Chat'),
+    TabPage(tabTitle: '🛍️ House Rent'),
+    TabPage(tabTitle: '💼 Job Search'),
+    TabPage(tabTitle: '📢 Announcements'),
   ];
 
   @override
@@ -36,21 +35,27 @@ class _JobSearchState extends State<JobSearch> with SingleTickerProviderStateMix
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: const Text('Lets Connect'),
-        centerTitle: true,
-        backgroundColor: const Color(0xFF6C88BF),
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.white,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
-          tabs: const [
-            Tab(icon: Icon(Icons.home), text: 'General Chat'),
-            Tab(icon: Icon(Icons.storefront), text: 'House Rent'),
-            Tab(icon: Icon(Icons.work), text: 'Job Search'),
-            Tab(icon: Icon(Icons.campaign), text: 'Announcements'),
-          ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight + 8),
+        child: AppBar(
+          backgroundColor: const Color(0xFF6C88BF),
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          flexibleSpace: Align(
+            alignment: Alignment.bottomCenter,
+            child: TabBar(
+              controller: _tabController,
+              indicatorColor: Colors.white,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white70,
+              tabs: const [
+                Tab(icon: Icon(Icons.home), text: 'General Chat'),
+                Tab(icon: Icon(Icons.storefront), text: 'House Rent'),
+                Tab(icon: Icon(Icons.work), text: 'Job Search'),
+                Tab(icon: Icon(Icons.campaign), text: 'Announcements'),
+              ],
+            ),
+          ),
         ),
       ),
       body: TabBarView(
@@ -61,7 +66,7 @@ class _JobSearchState extends State<JobSearch> with SingleTickerProviderStateMix
   }
 }
 
-// Rename the tab widget to TabPage to avoid conflict with full ChatPage
+// Tab Page Widget
 class TabPage extends StatefulWidget {
   final String tabTitle;
   const TabPage({super.key, required this.tabTitle});
@@ -128,22 +133,26 @@ class _TabPageState extends State<TabPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Page title at the top of messages
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            widget.tabTitle,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF333333),
+            ),
+          ),
+        ),
+        const Divider(height: 1, thickness: 0.5, color: Colors.grey),
         Expanded(
           child: ListView.builder(
             controller: _scrollController,
             reverse: true,
             padding: const EdgeInsets.all(10),
-            itemCount: messages.length + 1,
+            itemCount: messages.length,
             itemBuilder: (context, index) {
-              if (index == messages.length) {
-                return Center(
-                  child: Text(
-                    widget.tabTitle,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                );
-              }
-
               final message = messages[index];
               return Align(
                 alignment: message.isSentByMe ? Alignment.centerRight : Alignment.centerLeft,

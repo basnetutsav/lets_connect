@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'job_search.dart';
-import 'inbox_chat.dart'; // DMPage & InboxPage
-import 'settings.dart'; // Your separate settings page
+import 'inbox_chat.dart';
+import 'settings.dart';
 
 class TopBar extends StatefulWidget {
   final Function(bool) toggleTheme;
@@ -16,34 +16,67 @@ class TopBar extends StatefulWidget {
 class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool _darkMode = false;
+  String _selectedLocation = "Ontario"; // Default location
 
   @override
   void initState() {
     super.initState();
     _darkMode = widget.isDarkMode;
-    _tabController = TabController(length: 2, vsync: this); // Only Home & Chat
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  Future<void> _openSettings() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SettingsPage(
+          toggleTheme: widget.toggleTheme,
+          isDarkMode: _darkMode,
+        ),
+      ),
+    );
+
+    if (result != null && result is String) {
+      setState(() {
+        _selectedLocation = result;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lets Connect'),
         backgroundColor: const Color(0xFF6C88BF),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Lets Connect',
+              style: TextStyle(
+                fontSize: 16, // smaller main title
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Row(
+              children: [
+                const Icon(Icons.location_on, size: 14, color: Colors.white70),
+                const SizedBox(width: 4),
+                Text(
+                  _selectedLocation,
+                  style: const TextStyle(
+                    fontSize: 12, // smaller subtitle
+                    color: Colors.white70,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SettingsPage( // Navigate to SettingsPage from settings.dart
-                    toggleTheme: widget.toggleTheme,
-                    isDarkMode: _darkMode,
-                  ),
-                ),
-              );
-            },
+            onPressed: _openSettings,
           ),
         ],
         bottom: TabBar(
@@ -56,12 +89,11 @@ class _TopBarState extends State<TopBar> with SingleTickerProviderStateMixin {
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          const JobSearch(), // Home
-          const InboxPage(), // Chat (DM inbox)
+        children: const [
+          JobSearch(),
+          InboxPage(),
         ],
       ),
     );
   }
 }
-
