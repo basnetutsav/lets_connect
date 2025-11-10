@@ -54,7 +54,7 @@ class InboxPage extends StatelessWidget {
             leading: CircleAvatar(
               backgroundImage: NetworkImage(chat['avatar']!),
               radius: 25,
-              backgroundColor: theme.colorScheme.surfaceVariant, // Theme-aware
+              backgroundColor: theme.colorScheme.surfaceContainerHighest, // Theme-aware
               onBackgroundImageError: (_, __) {
                 // Fallback if image fails to load
                 print('Failed to load avatar for ${chat['name']}');
@@ -253,7 +253,7 @@ class _DMPageState extends State<DMPage> {
                     decoration: BoxDecoration(
                       color: isMe
                           ? theme.primaryColor // Theme-aware sent bubble (blue)
-                          : theme.colorScheme.surfaceVariant, // Theme-aware received bubble
+                          : theme.colorScheme.surfaceContainerHighest, // Theme-aware received bubble
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(18),
                         topRight: const Radius.circular(18),
@@ -310,7 +310,7 @@ class _DMPageState extends State<DMPage> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceVariant,
+                      color: theme.colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: TextField(

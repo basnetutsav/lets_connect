@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                         });
                       },
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                      fillColor: MaterialStateProperty.all(const Color(0xFF6C88BF)),
+                      fillColor: WidgetStateProperty.all(const Color(0xFF6C88BF)),
                     ),
                     const Text('Remember Password'),
                   ],
